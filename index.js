@@ -1,3 +1,4 @@
+import * as contactsService from "./contacts.js";
 import { program } from "commander";
 program
   .option("-a, --action <type>", "choose action")
@@ -14,24 +15,34 @@ const options = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      // ...
-      break;
+      const allContacts = await contactsService.listContacts();
+      return allContacts;
+
 
     case "get":
-      // ... id
-      break;
+      const oneContact = await contactsService.getContactById(id);
+      return oneContact;
+
 
     case "add":
-      // ... name email phone
-      break;
+      const newContact = await contactsService.addContact(name, email, phone);
+      return newContact;
+
+
 
     case "remove":
-      // ... id
-      break;
+      const removeContact = await contactsService.removeContact(id)
+      return removeContact;
+
 
     default:
       console.warn("\x1B[31m Unknown action type!");
+      return Promise.reject();
   }
 }
 
-invokeAction(options);
+const result = invokeAction(options);
+result.then((r) => {
+  console.log(r);
+})
+  .catch(() => { });
