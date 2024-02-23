@@ -43,6 +43,6 @@ async function invokeAction({ action, id, name, email, phone }) {
 
 const result = invokeAction(options);
 result.then((r) => {
-  console.log(r);
+  console.table(r);
 })
   .catch(() => { });
